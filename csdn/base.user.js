@@ -10,20 +10,19 @@
 // @reference     https://source.unsplash.com/random
 // @namespace    https://greasyfork.org/zh-CN/scripts/432021
 // @supportURL   https://github.com/haiw2/MonkeyScript
+// @supportURL   https://gitee.com/haiw2/MonkeyScript
 // @homepageURL  https://github.com/haiw2/MonkeyScript
+// @homepageURL  https://gitee.com/haiw2/MonkeyScript
 // ==/UserScript==
 
 (function() {
     'use strict';
     csdn.copyright.textData = '';
     let head_nav_toolbar = document.querySelector('#csdn-toolbar');
-
     // 删除头部广告
     head_nav_toolbar.addEventListener("DOMNodeInserted", function() {
         if(head_nav_toolbar.firstElementChild.className==='toolbar-advert') head_nav_toolbar.removeChild(head_nav_toolbar.firstElementChild);
     });
-
-
     // 删除登录弹窗
     document.body.addEventListener("DOMNodeInserted", function() {
         let login1 = document.querySelector('#app');
@@ -53,7 +52,6 @@
         construct(focusSwitch){
             console.log('构造方法');
         };
-
         /*
         @name    复制
         @func
@@ -138,9 +136,7 @@
             focusSwitch.removeChild(focusSwitch.lastElementChild);
             focusSwitch.removeAttribute('mouseup');
             toolbar.replaceChildren(focusSwitch);
-
             toolbar.style.left = '0px';
-
             // 修改默认页面配置样式
             main.removeAttribute('id');
             mainBox.firstElementChild.nextElementSibling.style.removeProperty('z-index');
