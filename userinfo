@@ -1,0 +1,11 @@
+// ==UserScript==
+// @name        玩转CSDN
+// @namespace     http://tampermonkey.net/
+// @version         0.1010
+// @match        *://*.blog.csdn.net/*
+// @icon        chrome://favicon/http://blog.csdn.net/
+// @description   仅供参考学习
+// @author        haiw2
+// @grant        GM_setClipboard
+// @reference     https://source.unsplash.com/random
+// ==/UserScript==
