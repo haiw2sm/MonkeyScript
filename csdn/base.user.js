@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        CSDN-筑基
 // @namespace     http://tampermonkey.net/
-// @version         0.1011
+// @version         0.1012
 // @match        *://*.blog.csdn.net/*
 // @icon        chrome://favicon/http://blog.csdn.net/
 // @description   仅供参考学习
@@ -156,18 +156,25 @@
         fullScreenRead: function(status){
             let leftSide = document.querySelector('.blog_container_aside');
             let father = document.querySelector('.main_father');
+            let main = father.querySelector('main');
             leftSide.childNodes.forEach((item,index)=>{
-                if(status==0 && item.firstElementChild && item.id!='asidedirectory') item.style.setProperty('display', 'none');
+                if(status==0 && item.firstElementChild && item.id!='asidedirectory'){
+                    item.style.setProperty('display', 'none');
+                    main.style.setProperty('width','100%');
+                }
                 if(status==0 && item.id=='asidedirectory'){
                     item.style.position = 'fixed';
                     item.style.right = '0';
                     father.style.margin = '0';
                     father.style.padding = '0';
                     father.firstElementChild.style.width = '100%';
-                    father.firstElementChild.firstElementChild.style.width = '100%';
+                    main.style.setProperty('width','100%');
                 }
-                if(status!=0 && item.firstElementChild && item.firstElementChild!='asidedirectory'){
-                    item.style.display = '';
+
+                if(status!=0 && item.firstElementChild && item.id!='asidedirectory'){
+                    item.style.display = 'block';
+                    main.style.removeProperty('width');
+
                 }
                 if(status!=0 && item.firstElementChild && item.id=='asidedirectory'){
                     item.style.removeProperty('position');
@@ -175,8 +182,9 @@
                     father.style.removeProperty('margin');
                     father.style.removeProperty('padding');
                     father.firstElementChild.style.removeProperty('width');
-                    father.firstElementChild.firstElementChild.style.removeProperty('width');
+                    main.style.removeProperty('width');
                 }
+
             })
         }
     };
