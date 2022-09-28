@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        CSDN-筑基
 // @namespace     http://tampermonkey.net/
-// @version         0.1012
+// @version         1.0.0
 // @match        *://*.blog.csdn.net/*
 // @icon        chrome://favicon/http://blog.csdn.net/
 // @description   仅供参考学习
@@ -93,6 +93,10 @@
             toolbar.replaceChildren(focusSwitch);
             toolbar.style.right = '0';
             let head_toolbar = document.getElementById('csdn-toolbar');
+			// 重点：回调函数传入的参数在哪个域下，那么此回调函数内部的this就指向谁
+			head_toolbar.style.display = 'none';
+			// 进入全屏
+			that.fullScreenRead(false);
             focusSwitch.addEventListener('click', function(){
                 // 重点：回调函数传入的参数在哪个域下，那么此回调函数内部的this就指向谁
                 that.status = ~that.status;
@@ -101,6 +105,7 @@
                 // 进入全屏
                 that.fullScreenRead(that.status);
             },'true');
+
         },
         // 删除选中复制多段，粘贴出现版权信息
         delete_copy_right: function(){
@@ -164,7 +169,35 @@
                 }
                 if(status==0 && item.id=='asidedirectory'){
                     item.style.position = 'fixed';
-                    item.style.right = '0';
+                    item.style.left = '0';
+
+					console.log(item.firstChild);
+
+					// item.querySelector('.aside-title').style.background = 'rgba(0,0,0,.7)';
+					// item.querySelector('.group_item').style.background = 'rgba(0,0,0,.7)';
+					const toc = item.querySelector('.aside-title');
+					toc.parentNode.style.width = 'auto';
+					toc.parentNode.style.background = '#6c928c';
+					toc.style.background = 'transparent';
+					const content = item.querySelector('.group_item');
+					content.style.display = 'None';
+					let showTOC = false;
+					toc.addEventListener('click', ()=>{
+						showTOC = ~showTOC;
+						if (showTOC){
+							toc.parentNode.style.width = '300px';
+							toc.style.removeProperty('background: #f5f5f5');
+							content.style.display = 'block';
+						}else{
+							toc.parentNode.style.width = 'auto';
+							toc.parentNode.style.background = 'background: #6c928c';
+							content.style.display = 'None';
+
+						}
+
+					})
+
+
                     father.style.margin = '0';
                     father.style.padding = '0';
                     father.firstElementChild.style.width = '100%';
@@ -186,8 +219,18 @@
                 }
 
             })
-        }
+        },
+
+		delete_or_unvisable_elem: function (selector, method){
+			const elem = document.querySelector(selector);
+			if (method === 'del') elem.parentNode.removeChild(elem);
+			else elem.style.display = 'None';
+		},
+		delete_author_toolbox: function(selector){
+			this.delete_or_unvisable_elem(selector, 'del');
+		}
     };
+
     const w2 = new HAIW2();
     let that = this;
     w2.delete_copy_right();
@@ -196,4 +239,5 @@
     w2.delete_login_dialog();
     w2.allow_copy();
     w2.modifyFocusPriviledge(w2);
+	w2.delete_author_toolbox('.left-toolbox');
 })();
